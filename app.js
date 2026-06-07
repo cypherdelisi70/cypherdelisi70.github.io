@@ -250,11 +250,139 @@ $$('.cat-card').forEach(card => {
   });
 });
 
+// === QUIZ ===
+const QUIZ_QUESTIONS = [
+  {
+    q: 'Cypher’ın kiti (ability) hangisi değildir?',
+    opts: ['Spycam', 'Tripwire', 'Viper’s Pit', 'Cyber Cage'],
+    correct: 2,
+    explain: 'Viper’s Pit Viper’ın ultimate’ıdır, Cypher’ın değil.',
+  },
+  {
+    q: 'Bind haritasında kaç tane teleporter vardır?',
+    opts: ['1', '2', '3', '4'],
+    correct: 1,
+    explain: 'Bind, iki taraf arasında hızlı geçiş sağlayan 2 teleporter’a sahiptir.',
+  },
+  {
+    q: 'Sage’in duvarı (Barrier Orb) kaç saniye dayanır?',
+    opts: ['20 sn', '30 sn', '40 sn', '60 sn'],
+    correct: 2,
+    explain: 'Barrier Orb, 40 saniye boyunca haritada kalır. 1:42 yükleyince hazır olur.',
+  },
+  {
+    q: 'Hangisi bir Sentinel (Gözcü) ajanı değildir?',
+    opts: ['Cypher', 'Killjoy', 'Jett', 'Chamber'],
+    correct: 2,
+    explain: 'Jett bir Duelist’tir, hız ve giriş uzmanı.',
+  },
+  {
+    q: 'Jett’in ultimate’ı Blade Storm’un kaç bıçağı vardır?',
+    opts: ['3', '5', '7', '10'],
+    correct: 1,
+    explain: 'Blade Storm 5 bıçak verir. Kill + right-click = tüm bıçaklar harcanır.',
+  },
+];
+
+function initQuiz() {
+  const box = $('#quizBox');
+  if (!box) return;
+
+  let cur = 0;
+  let score = 0;
+  let answered = false;
+
+  const $qNum = $('#qNum');
+  const $qTotal = $('#qTotal');
+  const $qText = $('#qText');
+  const $qOpts = $('#qOptions');
+  const $qFeedback = $('#qFeedback');
+  const $qNext = $('#qNext');
+  const $qResult = $('#qResult');
+  const $qBar = $('#quizBar');
+
+  $qTotal.textContent = QUIZ_QUESTIONS.length;
+
+  function load() {
+    const item = QUIZ_QUESTIONS[cur];
+    $qNum.textContent = cur + 1;
+    $qText.textContent = item.q;
+    $qBar.style.width = ((cur) / QUIZ_QUESTIONS.length * 100) + '%';
+    $qOpts.innerHTML = item.opts.map((o, i) =>
+      `<button class="quiz-opt" data-i="${i}"><span class="opt-letter">${'ABCD'[i]}</span><span>${o}</span></button>`
+    ).join('');
+    $qFeedback.hidden = true;
+    $qNext.hidden = true;
+    answered = false;
+    $qOpts.querySelectorAll('.quiz-opt').forEach(b => {
+      b.addEventListener('click', () => answer(parseInt(b.dataset.i)));
+    });
+  }
+
+  function answer(i) {
+    if (answered) return;
+    answered = true;
+    const item = QUIZ_QUESTIONS[cur];
+    const buttons = $qOpts.querySelectorAll('.quiz-opt');
+    buttons.forEach(b => b.disabled = true);
+    if (i === item.correct) {
+      score++;
+      buttons[i].classList.add('correct');
+      $qFeedback.className = 'quiz-feedback ok';
+      $qFeedback.textContent = '✓ Doğru! ' + item.explain;
+    } else {
+      buttons[i].classList.add('wrong');
+      buttons[item.correct].classList.add('correct');
+      $qFeedback.className = 'quiz-feedback no';
+      $qFeedback.textContent = '✗ Yanlış. Doğru cevap: ' + item.opts[item.correct] + '. ' + item.explain;
+    }
+    $qFeedback.hidden = false;
+    $qNext.hidden = cur === QUIZ_QUESTIONS.length - 1;
+    if (cur === QUIZ_QUESTIONS.length - 1) {
+      setTimeout(showResult, 1200);
+    }
+  }
+
+  function showResult() {
+    $qOpts.innerHTML = '';
+    $qText.hidden = true;
+    $qFeedback.hidden = true;
+    $qNext.hidden = true;
+    $qBar.style.width = '100%';
+    $qResult.hidden = false;
+    const pct = score / QUIZ_QUESTIONS.length;
+    const emoji = pct === 1 ? '🏆' : pct >= 0.8 ? '⭐' : pct >= 0.6 ? '👍' : pct >= 0.4 ? '🤔' : '📚';
+    const title = pct === 1 ? 'Tam Skor! Radiant’sın sen!' :
+                  pct >= 0.8 ? 'Çok iyi! Immortal adayısın.' :
+                  pct >= 0.6 ? 'İyi! Platinum seviyesi.' :
+                  pct >= 0.4 ? 'Fena değil, biraz daha izle.' :
+                                'Daha çok video izlemelisin!';
+    $('#qrEmoji').textContent = emoji;
+    $('#qrTitle').textContent = title;
+    $('#qrText').textContent = `${QUIZ_QUESTIONS.length} soruda ${score} doğru cevap verdin (%${Math.round(pct * 100)})`;
+  }
+
+  $qNext.addEventListener('click', () => {
+    cur++;
+    load();
+  });
+
+  $('#qrRestart').addEventListener('click', () => {
+    cur = 0; score = 0;
+    $qText.hidden = false;
+    $qResult.hidden = true;
+    load();
+  });
+
+  load();
+}
+
 // === INIT ===
 $('#year').textContent = new Date().getFullYear();
 render();
 updateHeroPhotos();
 updateMeta();
+initQuiz();
 
 // Auto-fetch on load
 setTimeout(() => {
