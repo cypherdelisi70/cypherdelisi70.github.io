@@ -6,6 +6,7 @@
 
 const VIDEOS = [
   // AUTO-POPULATED FROM YOUTUBE DATA API
+  { id: 'H55MhsVLQD0', title: "Can't go without Kolbasti",      views: 0,  likes: 0, date: '2026-06-07', duration: '0:30' },
   { id: 'Sz6MOOT6OqE', title: 'Valorant Aim Geliştirme Taktiği', views: 12, likes: 1, date: '2026-06-03', duration: '0:35' },
   { id: 'vlUvlX9AkIA', title: 'Valorant Viper Taktik',          views: 12, likes: 2, date: '2026-06-03', duration: '0:29' },
   { id: 'Ye1w7cQb-Fs', title: 'Valorant En Güçlü Ajan',         views: 10, likes: 2, date: '2026-06-02', duration: '0:42' },
