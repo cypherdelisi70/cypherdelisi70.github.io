@@ -282,6 +282,66 @@ const QUIZ_QUESTIONS = [
     correct: 1,
     explain: 'Blade Storm 5 bıçak verir. Kill + right-click = tüm bıçaklar harcanır.',
   },
+  {
+    q: 'Valorant kaç yılında piyasaya çıktı?',
+    opts: ['2018', '2019', '2020', '2021'],
+    correct: 2,
+    explain: 'Valorant, Riot Games tarafından 2 Haziran 2020’de piyasaya sürüldü.',
+  },
+  {
+    q: 'Hangisi bir Controller (Kontrol) ajanıdır?',
+    opts: ['Reyna', 'Omen', 'Yoru', 'Neon'],
+    correct: 1,
+    explain: 'Omen klasik bir Controller’dır. Dumanı haritayı kontrol altına alır.',
+  },
+  {
+    q: 'Ascent haritasının ana bölgesi hangi şehirden esinlenmiştir?',
+    opts: ['Roma', 'Venedik', 'İstanbul', 'Lizbon'],
+    correct: 1,
+    explain: 'Ascent, İtalyan mimarisi ve Venedik’ten esinlenmiştir.',
+  },
+  {
+    q: 'Hangisi Phoenix’in ultimate’ıdır?',
+    opts: ['Blaze', 'Curveball', 'Hot Hands', 'Run it Back'],
+    correct: 3,
+    explain: 'Run it Back, Phoenix’in ölümsüz pozisyon alma ultimate’ıdır.',
+  },
+  {
+    q: 'Cypher’ın Neural Theft ultimate’ı kaç saniyelik bilgi verir?',
+    opts: ['3 sn', '6 sn', '10 sn', '12 sn'],
+    correct: 1,
+    explain: 'Neural Theft, ölen düşmanın son 6 saniyelik harita bilgisini verir.',
+  },
+  {
+    q: 'Klasik (Classic) tabanca hangi ajanın ultimate’ıyla birlikte verilir?',
+    opts: ['Jett', 'Reyna', 'Chamber', 'Sovyet (hiçbiri)'],
+    correct: 3,
+    explain: 'Klasik başlangıç silahıdır, ultimate ile gelmez. Ancak Chamber’ın Headhunter ultimate’ı da tabanca tipidir.',
+  },
+  {
+    q: 'Hangisi Türk yapımı bir Valorant haritası değildir?',
+    opts: ['Bind', 'Haven', 'Split', 'Fracture'],
+    correct: 3,
+    explain: 'Fracture, ABD çölü temalıdır. Türk yapımı harita yoktur ama Türk oyuncu kitlesi çok büyüktür.',
+  },
+  {
+    q: 'Bir round toplam kaç saniye sürer?',
+    opts: ['60 sn', '90 sn', '100 sn', '120 sn'],
+    correct: 2,
+    explain: 'Standart round süresi 100 saniyedir. Spike patlaması 45 saniye içinde olmalıdır.',
+  },
+  {
+    q: 'Reyna’nın ultimate’ı Empress kaç saniye sürer?',
+    opts: ['20 sn', '30 sn', '40 sn', '60 sn'],
+    correct: 1,
+    explain: 'Empress 30 saniye sürer. Bu sürede Reyna daha hızlı ateş eder ve ölümsüz olur.',
+  },
+  {
+    q: 'Valorant’ta en yüksek rekabet rankı hangisidir?',
+    opts: ['Immortal', 'Radiant', 'Global Elite', 'Champion'],
+    correct: 1,
+    explain: 'Radiant en yüksek rekabet rankıdır. Üstünde sadece “Top 500” listesi vardır.',
+  },
 ];
 
 function initQuiz() {
@@ -351,11 +411,12 @@ function initQuiz() {
     $qBar.style.width = '100%';
     $qResult.hidden = false;
     const pct = score / QUIZ_QUESTIONS.length;
-    const emoji = pct === 1 ? '🏆' : pct >= 0.8 ? '⭐' : pct >= 0.6 ? '👍' : pct >= 0.4 ? '🤔' : '📚';
-    const title = pct === 1 ? 'Tam Skor! Radiant’sın sen!' :
-                  pct >= 0.8 ? 'Çok iyi! Immortal adayısın.' :
-                  pct >= 0.6 ? 'İyi! Platinum seviyesi.' :
-                  pct >= 0.4 ? 'Fena değil, biraz daha izle.' :
+    const emoji = pct === 1 ? '🏆' : pct >= 0.85 ? '⭐' : pct >= 0.7 ? '💎' : pct >= 0.5 ? '👍' : pct >= 0.3 ? '🤔' : '📚';
+    const title = pct === 1 ? 'Mükemmel! Tam 15/15, Radiant’sın sen!' :
+                  pct >= 0.85 ? 'Muhteşem! Immortal adayısın.' :
+                  pct >= 0.7 ? 'Çok iyi! Diamond+ seviyesi.' :
+                  pct >= 0.5 ? 'Fena değil, Platinum seviyesi.' :
+                  pct >= 0.3 ? 'Başlangıç için güzel, devam et.' :
                                 'Daha çok video izlemelisin!';
     $('#qrEmoji').textContent = emoji;
     $('#qrTitle').textContent = title;
